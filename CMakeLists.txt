@@ -31,7 +31,8 @@ ament_auto_add_library(
 
 target_link_libraries(
   ${PROJECT_NAME}
-    ${PHOXI_LIBRARY}
+    phoxi::phoxi
+    phoxi::phoxi_system_libs
 )
 
 rclcpp_components_register_node(
