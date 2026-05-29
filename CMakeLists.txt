@@ -14,7 +14,17 @@ endif()
 ##################
 #  dependencies  #
 ##################
-find_package(PhoXi REQUIRED CONFIG PATHS "$ENV{PHOXI_CONTROL_PATH}")
+if(DEFINED ENV{PHOXI_CONTROL_PATH} AND NOT "$ENV{PHOXI_CONTROL_PATH}" STREQUAL "")
+  set(_phoxi_path "$ENV{PHOXI_CONTROL_PATH}")
+elseif(DEFINED PhoXi_DIR)
+  set(_phoxi_path "${PhoXi_DIR}")
+else()
+  file(GLOB _phoxi_candidates "/opt/Photoneo/PhoXiControl-*")
+  list(SORT _phoxi_candidates COMPARE NATURAL ORDER DESCENDING)
+  list(GET _phoxi_candidates 0 _phoxi_path)
+endif()
+
+find_package(PhoXi REQUIRED CONFIG PATHS "${_phoxi_path}")
 add_definitions(-DPHO_SOFTWARE_VERSION_MAJOR=${PHO_SOFTWARE_VERSION_MAJOR}
 	        -DPHO_SOFTWARE_VERSION_MINOR=${PHO_SOFTWARE_VERSION_MINOR})
 
